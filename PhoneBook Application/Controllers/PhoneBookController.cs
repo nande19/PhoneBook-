@@ -80,9 +80,10 @@ namespace PhoneBook_Application.Controllers
                 person.PhoneNumber = viewModel.PhoneNumber;
 
                 await db_Context.SaveChangesAsync();
+
             }
 
-            return RedirectToAction("Table", "People");
+            return RedirectToAction("Table","PhoneBook");
         }
     }
 }

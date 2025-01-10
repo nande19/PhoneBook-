@@ -1,4 +1,14 @@
-﻿
+﻿@{
+    var successMessage = TempData["SuccessMessage"];
+}
+
+@if (successMessage != null)
+{
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
+
 <style>
     .phone-book-heading {
         color: blue; /* Blue text color */
@@ -41,7 +51,8 @@
     <td>@people.PhoneNumber</td>
     <td>@people.Email</td>
     <td>
-    <a>Edit</a>
+
+    <a class="btn btn-primary" asp-controller="PhoneBook" asp-action="Edit" asp-route-id="@people.Id">Update</a>
     </td>
     </tr>
 }
