@@ -1,0 +1,50 @@
+﻿
+<style>
+    .phone-book-heading {
+        color: blue; /* Blue text color */
+        text-shadow: -1px -1px 0 black, /* Top-left shadow */
+        1px -1px 0 black, /* Top-right shadow */
+        -1px 1px 0 black, /* Bottom-left shadow */
+        1px 1px 0 black; /* Bottom-right shadow */
+</style>
+
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<PhoneBook_Application.Models.Entities.People>
+
+<div class="d-flex align-items-center mb-4">
+    <h1 class="phone-book-heading me-3">All Contacts</h1>
+
+    <img src="/images/phone-book.png"
+         alt="Logo"
+         style="height: 30px; width: auto;" />
+</div>
+
+<table class="table">
+<thead>
+<tr> 
+<th>Name</th>
+<th>Phone Number</th>
+<th>Email</th>
+</tr>
+</thead>
+<tbody>
+@foreach (var people in Model)
+{
+    <tr>
+    <td>@people.Name</td>
+    <td>@people.PhoneNumber</td>
+    <td>@people.Email</td>
+    <td>
+    <a>Edit</a>
+    </td>
+    </tr>
+}
+</tbody>
+</table>
+<a href="@Url.Action("Add", "PhoneBook")" class="btn btn-primary">Add New Contact</a>
