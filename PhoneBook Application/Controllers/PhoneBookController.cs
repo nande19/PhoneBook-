@@ -42,7 +42,7 @@ namespace PhoneBook_Application.Controllers
                 await db_Context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Contact saved successfully!";
-                return RedirectToAction("Index"); // Redirect to another page or reload the form.
+                return RedirectToAction("Table"); // Redirect to another page or reload the form.
             }
             catch (Exception ex)
             {
