@@ -12,8 +12,8 @@ namespace PhoneBook_Application.Models.Entities
         public string Name { get; set; }
 
         [Required]
-        [Range(1000000000, 9999999999, ErrorMessage = "Enter a valid phone number.")]
-        public int PhoneNumber {  get; set; }
+        [RegularExpression(@"^\+27\d{9}$", ErrorMessage = "Phone number must start with +27 and be followed by 9 digits.")]
+        public string PhoneNumber { get; set; }
 
         [EmailAddress(ErrorMessage = "Enter a valid email address.")]
         public string? Email { get; set; }

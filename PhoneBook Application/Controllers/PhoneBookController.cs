@@ -71,19 +71,26 @@ namespace PhoneBook_Application.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(People viewModel)
         {
-            var person = await db_Context.Peoples.FindAsync(viewModel.Id);
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
 
+            var person = await db_Context.Peoples.FindAsync(viewModel.Id);
             if (person is not null)
             {
                 person.Name = viewModel.Name;
-                person.Email = viewModel.Email;
                 person.PhoneNumber = viewModel.PhoneNumber;
+                person.Email = viewModel.Email;
 
                 await db_Context.SaveChangesAsync();
 
+                TempData["SuccessMessage"] = "Contact updated successfully!";
+                return RedirectToAction("Table", "PhoneBook");
             }
 
-            return RedirectToAction("Table","PhoneBook");
+            ModelState.AddModelError(string.Empty, "Contact not found.");
+            return View(viewModel);
         }
     }
 }

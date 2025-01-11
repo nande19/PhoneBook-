@@ -40,16 +40,26 @@
 
 </div>
 
-<div class="mt-3">
-    <label class="form-label" 
-    style="font-size: 1.5rem;" >Phone Number</label>
-    <input type="text" 
-        class="form-control" 
-        asp-for="PhoneNumber" />
-        <span asp-validation-for="PhoneNumber" 
-        class="text-danger"></span>
+    <div class="mt-3">
+        <label class="form-label" style="font-size: 1.5rem;">Phone Number</label>
+        <input type="text"
+               class="form-control"
+               asp-for="PhoneNumber"
+               value="+27"
+               oninput="enforcePhoneNumberFormat(this)" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
 
-</div>
+    <script>
+        function enforcePhoneNumberFormat(input) {
+            // Ensure the input always starts with +27 and contains only 9 additional digits
+            const regex = /^\+27\d{0,9}$/;
+            if (!regex.test(input.value)) {
+                input.value = input.value.slice(0, input.value.length - 1);
+            }
+        }
+    </script>
+
 
 <div class="mt-3">
     <label class="form-label" style="font-size: 1.5rem;" >Email</label>
