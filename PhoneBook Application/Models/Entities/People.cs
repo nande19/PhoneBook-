@@ -11,7 +11,7 @@ namespace PhoneBook_Application.Models.Entities
         [Required]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Phone number is required.")]
         [RegularExpression(@"^\+27\d{9}$", ErrorMessage = "Phone number must start with +27 and be followed by 9 digits.")]
         public string PhoneNumber { get; set; }
 

@@ -19,6 +19,11 @@
 }
 
 <style>
+
+   
+
+ 
+
     .phone-book-heading {
         color: blue; /* Blue text color */
         text-shadow: -1px -1px 0 black, /* Top-left shadow */
@@ -28,16 +33,27 @@
     }
 
     .search-bar {
-        margin-bottom: 20px;
+        margin-bottom: 40px;
         display: flex;
-        gap: 10px;
+        flex-direction: column; /* Stack items vertically */
+        gap: 10px; /* Space between elements */
     }
 
         .search-bar input {
-            width: 300px;
+            width: 400px;
             padding: 5px;
         }
 
+    .search-button {
+        width: 100px; /* Match the input width */
+        color: white; /* White text for better visibility */
+    }
+
+    .clear-button {
+        width: 100px; /* Match the input width */
+        color: black; /* Black text for visibility */
+        text-align: center;
+    }
 </style>
 
 
@@ -60,10 +76,15 @@
 <div class="search-bar">
     <form method="get" asp-action="Table" asp-controller="PhoneBook">
         <input type="text" name="searchQuery" class="form-control" placeholder="Search by name or phone number..." value="@ViewData["SearchQuery"]" />
-        <button type="submit" class="btn btn-primary">Search</button>
+
+        <!-- Search Button -->
+        <button type="submit" class="btn btn-primary search-button">Search</button>
+
+        <!-- Clear Button -->
+        <a href="@Url.Action("Table", "PhoneBook")" class="btn btn-danger clear-button">Clear</a>
     </form>
-    <a href="@Url.Action("Table", "PhoneBook")" class="btn btn-secondary">Clear</a>
 </div>
+
 
 
 <table class="table">

@@ -40,6 +40,12 @@ namespace PhoneBook_Application.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddContactViewModel addContactViewModel)
         {
+            // Check if the phone number has only the default +27 (i.e., no numbers other than +27)
+            if (string.IsNullOrWhiteSpace(addContactViewModel.PhoneNumber) || addContactViewModel.PhoneNumber == "+27")
+            {
+                ModelState.AddModelError("PhoneNumber", "Please enter a valid phone number, excluding the default '+27' prefix.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(addContactViewModel); // Return the same view with validation errors.
@@ -69,13 +75,20 @@ namespace PhoneBook_Application.Controllers
             }
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Table()
-        //{
-        //    var person = await db_Context.Peoples.ToListAsync();
+        [HttpPost]
+        public IActionResult AddContact(People contact)
+        {
+            if (ModelState.IsValid)
+            {
+                // Save the contact to the database
+                db_Context.Peoples.Add(contact);
+                db_Context.SaveChanges();
+                return RedirectToAction("Index"); // or any other appropriate redirect
+            }
 
-        //    return View(person);
-        //}
+            return View(contact); // If validation fails, return the same view with the errors
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
