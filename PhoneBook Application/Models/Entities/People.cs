@@ -5,8 +5,17 @@ namespace PhoneBook_Application.Models.Entities
 {
     public class People
     {
+        //--------------------------------------------------------------------------------------------------------//
 
+        /// <summary>
+        /// This maps to the database table to store the contact details.
+        /// </summary>
+        /// 
+
+        //primary key used for unique identification
         public Guid Id { get; set; }
+
+        //the rest are variables for storing what the user enters
 
         [Required]
         public string Name { get; set; }
@@ -20,3 +29,4 @@ namespace PhoneBook_Application.Models.Entities
         
     }
 }
+        //---------------------------------------- END OF FILE -------------------------------------------------------//

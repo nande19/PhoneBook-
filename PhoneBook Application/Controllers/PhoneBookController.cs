@@ -9,12 +9,22 @@ namespace PhoneBook_Application.Controllers
     public class PhoneBookController : Controller
     {
         private readonly ApplicationDbContext db_Context;
+
+        //--------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// initialises database context constructor  
+        /// </summary>
         public PhoneBookController(ApplicationDbContext dbContext)
         {
             this.db_Context = dbContext;
         }
 
+//--------------------------------------------------------------------------------------------------------//
 
+        /// <summary>
+        /// displays the contacts on a table which can be filtered by a search query
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> Table(string searchQuery)
         {
@@ -31,11 +41,23 @@ namespace PhoneBook_Application.Controllers
             return View(contacts);
         }
 
+//--------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// ensures that the form to add new contacts is displayed
+        /// </summary>
+        
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
+
+        //--------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// handles submission of a new contact being added 
+        /// </summary>
 
         [HttpPost]
         public async Task<IActionResult> Add(AddContactViewModel addContactViewModel)
@@ -46,6 +68,8 @@ namespace PhoneBook_Application.Controllers
                 ModelState.AddModelError("PhoneNumber", "Please enter a valid phone number, excluding the default '+27' prefix.");
             }
 
+            // If model validation fails, return the with error messages
+
             if (!ModelState.IsValid)
             {
                 return View(addContactViewModel); // Return the same view with validation errors.
@@ -53,6 +77,7 @@ namespace PhoneBook_Application.Controllers
 
             try
             {
+                //creates a new contact
                 var person = new People
                 {
                     Id = Guid.NewGuid(),
@@ -60,9 +85,12 @@ namespace PhoneBook_Application.Controllers
                     PhoneNumber = addContactViewModel.PhoneNumber,
                     Email = addContactViewModel.Email
                 };
+                // Add and save the new contact in the database
 
                 db_Context.Peoples.Add(person);
                 await db_Context.SaveChangesAsync();
+
+                // Inform the user of success 
 
                 TempData["SuccessMessage"] = "Contact saved successfully!";
                 return RedirectToAction("Table"); // Redirect to another page or reload the form.
@@ -75,6 +103,13 @@ namespace PhoneBook_Application.Controllers
             }
         }
 
+
+        //--------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// adding a contact directly
+        /// </summary>
+       
         [HttpPost]
         public IActionResult AddContact(People contact)
         {
@@ -89,14 +124,26 @@ namespace PhoneBook_Application.Controllers
             return View(contact); // If validation fails, return the same view with the errors
         }
 
+        //--------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// displays edit view for a specific contact which is chosen
+        /// </summary>
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
+            //fetch contact using their ID
             var person = await db_Context.Peoples.FindAsync(id);
 
             return View(person);
         }
+
+        //--------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// submission of edited contact is handled here 
+        /// </summary>
 
         [HttpPost]
         public async Task<IActionResult> Edit(People viewModel)
@@ -105,6 +152,8 @@ namespace PhoneBook_Application.Controllers
             {
                 return View(viewModel);
             }
+
+            // Find the contact by ID and update its details
 
             var person = await db_Context.Peoples.FindAsync(viewModel.Id);
             if (person is not null)
@@ -123,13 +172,22 @@ namespace PhoneBook_Application.Controllers
             return View(viewModel);
         }
 
+//--------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// deletes contacts by their ID's
+        /// </summary>
+        /// 
+
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
+            //finds the contact by using the ID
             var person = await db_Context.Peoples.FindAsync(id);
 
             if (person != null)
             {
+                //remove and save changes
                 db_Context.Peoples.Remove(person);
                 await db_Context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Contact deleted successfully!";
@@ -145,3 +203,4 @@ namespace PhoneBook_Application.Controllers
         
     }
 }
+        //---------------------------------------- END OF FILE -------------------------------------------------------//
