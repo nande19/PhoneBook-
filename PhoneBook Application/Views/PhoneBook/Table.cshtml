@@ -1,11 +1,20 @@
 ﻿@{
     var successMessage = TempData["SuccessMessage"];
+    var errorMessage = TempData["ErrorMessage"];
+
 }
 
 @if (successMessage != null)
 {
     <div class="alert alert-success">
         @successMessage
+    </div>
+}
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">
+        @errorMessage
     </div>
 }
 
@@ -16,6 +25,19 @@
         1px -1px 0 black, /* Top-right shadow */
         -1px 1px 0 black, /* Bottom-left shadow */
         1px 1px 0 black; /* Bottom-right shadow */
+    }
+
+    .search-bar {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+        .search-bar input {
+            width: 300px;
+            padding: 5px;
+        }
+
 </style>
 
 
@@ -35,6 +57,15 @@
          style="height: 30px; width: auto;" />
 </div>
 
+<div class="search-bar">
+    <form method="get" asp-action="Table" asp-controller="PhoneBook">
+        <input type="text" name="searchQuery" class="form-control" placeholder="Search by name or phone number..." value="@ViewData["SearchQuery"]" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <a href="@Url.Action("Table", "PhoneBook")" class="btn btn-secondary">Clear</a>
+</div>
+
+
 <table class="table">
 <thead>
 <tr> 
@@ -44,6 +75,9 @@
 </tr>
 </thead>
 <tbody>
+
+        @if (Model != null && Model.Any())
+        {
 @foreach (var people in Model)
 {
     <tr>
@@ -55,7 +89,15 @@
     <a class="btn btn-primary" asp-controller="PhoneBook" asp-action="Edit" asp-route-id="@people.Id">Update</a>
     </td>
     </tr>
-}
-</tbody>
+        }
+        }
+        else
+        {
+        <tr>
+            <td colspan="4" class="text-center">No contacts found.</td>
+        </tr>
+        }
+    </tbody>
 </table>
+
 <a href="@Url.Action("Add", "PhoneBook")" class="btn btn-primary">Add New Contact</a>

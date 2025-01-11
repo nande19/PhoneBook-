@@ -14,6 +14,23 @@ namespace PhoneBook_Application.Controllers
             this.db_Context = dbContext;
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Table(string searchQuery)
+        {
+            // Store the search query in ViewData so it can be reflected in the search bar
+            ViewData["SearchQuery"] = searchQuery;
+
+            // Retrieve the contacts based on search query
+            var contacts = string.IsNullOrWhiteSpace(searchQuery)
+                ? await db_Context.Peoples.ToListAsync()  // Return all contacts if no query
+                : await db_Context.Peoples
+                                   .Where(p => (p.Name.Contains(searchQuery) || p.PhoneNumber.Contains(searchQuery)))
+                                   .ToListAsync(); // Filter by name or phone number
+
+            return View(contacts);
+        }
+
         [HttpGet]
         public IActionResult Add()
         {
@@ -52,13 +69,13 @@ namespace PhoneBook_Application.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Table()
-        {
-            var person = await db_Context.Peoples.ToListAsync();
+        //[HttpGet]
+        //public async Task<IActionResult> Table()
+        //{
+        //    var person = await db_Context.Peoples.ToListAsync();
 
-            return View(person);
-        }
+        //    return View(person);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
@@ -111,5 +128,7 @@ namespace PhoneBook_Application.Controllers
 
             return RedirectToAction("Table", "PhoneBook");
         }
+
+        
     }
 }
