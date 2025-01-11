@@ -6,6 +6,20 @@
         1px -1px 0 black, /* Top-right shadow */
         -1px 1px 0 black, /* Bottom-left shadow */
         1px 1px 0 black; /* Bottom-right shadow */
+
+    }
+
+    .button-container {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Space between buttons */
+        margin-top: 20px;
+    }
+
+        .button-container form {
+            margin: 0; /* Remove default margin from the forms */
+        }
+
 </style>
 
 @*
@@ -92,13 +106,15 @@ else{
         class="btn btn-primary">Save</button>
 
     </div>
-
 </form>
 
-    <form method="post" asp-action="Delete" asp-controller="PhoneBook">
+    <form method="post" asp-action="Delete" asp-controller="PhoneBook" style="display: inline-block;">
         <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn btn-danger ms-3">Delete</button>
+        <div class="button-container">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
     </form>
+
 
 
 @section Scripts {
