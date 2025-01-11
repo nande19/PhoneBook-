@@ -92,5 +92,24 @@ namespace PhoneBook_Application.Controllers
             ModelState.AddModelError(string.Empty, "Contact not found.");
             return View(viewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var person = await db_Context.Peoples.FindAsync(id);
+
+            if (person != null)
+            {
+                db_Context.Peoples.Remove(person);
+                await db_Context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Contact deleted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Contact not found.";
+            }
+
+            return RedirectToAction("Table", "PhoneBook");
+        }
     }
 }
